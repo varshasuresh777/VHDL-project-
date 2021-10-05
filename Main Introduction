@@ -1,0 +1,21 @@
+The main aim is to design an arithmetic logic unit which perform 
+operation of Z = ¼ [A * B] + 1. The arithmetic unit consists of Wallace multiplier 
+where two operands which are 8-bit are multiplied and the output is 16- bit number 
+is passed to the barrel shifter. The barrel shifter shifts the output by two bits and 
+given to the adders. The transition of LOAD signal from HIGH TO LOW the values 
+of A and B are latched to register RA and RB. The CLEAR signal is used to reset 
+registers to zero. The final output is obtained at the port Z which is 16-bit register. 
+The LOAD signal starts calculation and ends with END_FLAG signal.
+
+
+
+The Wallace Tree Multiplier is implemented in this design to have less delay and 
+suitable for more for the more than 16-bit operands. This multiplier can be used in 
+array multiplier and booth multiplier. In Wallace multiplier implementation, two 
+operands are multiplied to reduce the partial product into two row matrix with help 
+of adders such as full adder, half adder and carry save adder. The each bit of every 
+column of the partial products are added together in parallel where no carry is 
+propagated. Then again matrix is reduced by next set to obtain two row matrix 
+model.
+
+
