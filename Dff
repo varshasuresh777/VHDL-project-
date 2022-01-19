@@ -1,0 +1,33 @@
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.std_logic_unsigned.all;
+entity Dff_logic is
+port
+(
+d: in std_logic;
+clk : in std_logic;
+reset : in std_logic;
+notq : out std_logic;
+q : out std_logic);
+end Dff_logic;
+architecture Dff_struct of Dff_logic is
+component nand_logic1 is
+port (i : in std_logic ;
+j : in std_logic ;
+k : out std_logic);
+end component;
+component nand_logic2 is
+port (o, p, q : in std_logic ;
+r: out std_logic);
+end component;
+signal s,r,notQ1,Q1,t1,t2: std_logic;
+begin
+p1 : nand_logic1 port map (s, notq1, q1);
+p2 : nand_logic2 port map (r,q1,reset, notq1);
+p3 : nand_logic1 port map (s,t2, t1);
+p4: nand_logic2 port map (t1, clk,reset, s);
+p5 : nand_logic2 port map (s, clk,t2,r);
+p6 : nand_logic2 port map (r,d,reset,t2);
+q<=Q1;
+notq<=notQ1;
+end Dff_struct;
