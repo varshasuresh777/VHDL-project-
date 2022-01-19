@@ -1,0 +1,34 @@
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.std_logic_unsigned.all;
+entity logicunit is
+port
+(
+a,b : in std_logic_vector(7 downto 0);
+c : out std_logic_vector (15 downto 0));
+end logicunit;
+architecture logicunit_struct of logicunit is
+component Wallace_logic is
+Port (M : in std_logic_vector(7 downto 0);
+ N : in std_logic_vector (7 downto 0);
+ answer : out std_logic_vector (15 downto 0));
+end component;
+component barrelshift_logic is
+port
+( P: in std_Logic_vector (15 downto 0);
+Q : out std_logic_vector (15 downto 0)
+);
+end component;
+component Incrementer_logic is
+port
+(
+Data1: in std_logic_vector (15 downto 0);
+Data2: out std_logic_vector (15 downto 0)
+);
+end component;
+signal x,y : std_logic_vector (15 downto 0);
+begin
+a1: Wallace_logic port map (a(7 downto 0), b(7 downto 0), x(15 downto 0));
+a2: Incrementer_logic port map (y(15 downto 0), c(15 downto 0));
+a3: barrelshift_logic port map (x(15 downto 0), y(15 downto 0));
+end logicunit_struct;
