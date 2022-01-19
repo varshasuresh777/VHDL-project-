@@ -1,0 +1,25 @@
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.std_logic_unsigned.all;
+entity Register16_logic is
+port
+(
+din: in std_logic_vector(15 downto 0);
+clk,reset : in std_logic;
+dout: out std_logic_vector (15 downto 0));
+end Register16_logic;
+architecture Register16_struct of Register16_logic is
+signal notd : std_logic_vector (15 downto 0);
+component Dff_logic is
+port
+(d: in std_logic;
+clk : in std_logic;
+reset : in std_logic;
+notq : out std_logic;
+q : out std_logic);
+end component;
+begin
+register_generate : for i in 0 to 15 generate
+l1 : Dff_logic port map (din(i), clk, reset, notd(i), dout(i));
+end generate;
+end Register16_struct;
