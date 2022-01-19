@@ -1,0 +1,25 @@
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.std_logic_unsigned.all;
+entity Register8_logic is
+port
+(
+qin: in std_logic_vector(7 downto 0);
+clk,reset : in std_logic;
+qout: out std_logic_vector (7 downto 0));
+end Register8_logic;
+architecture Register8_struct of Register8_logic is
+signal notq: std_logic_vector (7 downto 0);
+ component Dff_logic is
+port
+(d: in std_logic;
+clk : in std_logic;
+reset : in std_logic;
+notq : out std_logic;
+q : out std_logic);
+end component;
+begin
+generate_loop: for i in 0 to 7 generate
+U1: Dff_logic port map (qin(i),clk,reset,notq(i),qout(i));
+ end generate;
+ end Register8_struct;
