@@ -1,0 +1,182 @@
+  library ieee;
+use ieee.std_logic_1164.all;
+use ieee.std_logic_unsigned.all;
+entity Wallace_logic is
+Port (M : in std_logic_vector(7 downto 0);
+ N : in std_logic_vector (7 downto 0);
+ answer : out std_logic_vector (15 downto 0));
+end Wallace_logic;
+architecture struct_wallace of Wallace_logic is
+component fulladder_logic is
+ port (a,b,c: in std_logic;
+ sum1, carry1 : out std_logic);
+end component;
+component halfadder_logic is
+ port (s,t : in std_logic;
+sum, carry : out std_logic);
+end component;
+signal 
+x00,x01,x02,x03,x04,x05,x06,x07,x10,x11,x12,x13,x14,x15,x16,x17,x20,x21,x22,
+x23,x24,x25,x26,x27,x30,x31,x32,x33,x34,x35,x36,x37,x40,x41,x42,x43,x44,x45,
+x46,x47,x50,x51,x52,x53,x54,x55,x56,x57,x60,x61,x62,x63,x64,x65,x66,x67,x70,
+x71,x72,x73,x74,x75,x76,x77:std_logic;
+signal 
+y01,y02,y03,y04,y05,y06,y07,y08,y09,y10,y11,y12,y13,y14,y15,y16,y17,y18,y19,
+y20,y21,y22,y23,y24,y25,y26,y27,y28,y29,y30,y31,y32,y33,y34,y35,y36,y37,y38,
+y39,y40,y41,y42,y43,y44,y45,y46,y47,y48,y49,y50,y51,y52,y53,y54,y55,y56,y57,
+y58,y59,y60,y61,y62,y63,y64,y65,y66,y67,y68:std_logic;
+signal 
+z01,z02,z03,z04,z05,z06,z07,z08,z09,z10,z11,z12,z13,z14,z15,z16,z17,z18,z19,z2
+0,z21,z22,z23,z24,z25,z26,z27,z28,z29,z30,z31,z32,z33,z34,z35,z36,z37,z38,z39,z
+40,z41,z42,z43,z44,z45,z46,z47,z48,z49,z50,z51,z52,z53,z54,z55,z56,z57,z58,z59
+,z60,z61,z62,z63,z64,z65,z66,z67,z68:std_logic;
+begin
+x00 <= M(0) and N(0);
+x10 <= M(1) and N(0);
+x20 <= M(2) and N(0);
+x30 <= M(3) and N(0);
+x40 <= M(4) and N(0);
+x50 <= M(5) and N(0);
+x60 <= M(6) and N(0);
+x70 <= M(7) and N(0);
+x01 <= M(0) and N(1);
+x11 <= M(1) and N(1);
+x21 <= M(2) and N(1);
+x31 <= M(3) and N(1);
+x41 <= M(4) and N(1);
+x51 <= M(5) and N(1);
+x61 <= M(6) and N(1);
+x71 <= M(7) and N(1);
+x02 <= M(0) and N(2);
+x12 <= M(1) and N(2);
+x22 <= M(2) and N(2);
+x32 <= M(3) and N(2);
+x42 <= M(4) and N(2);
+x52 <= M(5) and N(2);
+x62 <= M(6) and N(2);
+x72 <= M(7) and N(2);
+x03 <= M(0) and N(3);
+x13 <= M(1) and N(3);
+x23 <= M(2) and N(3);
+x33 <= M(3) and N(3);
+x43 <= M(4) and N(3);
+x53 <= M(5) and N(3);
+x63 <= M(6) and N(3);
+x73 <= M(7) and N(3);
+x04 <= M(0) and N(4);
+x14 <= M(1) and N(4);
+x24 <= M(2) and N(4);
+x34 <= M(3) and N(4);
+x44 <= M(4) and N(4);
+x54 <= M(5) and N(4);
+x64 <= M(6) and N(4);
+x74 <= M(7) and N(4);
+x05 <= M(0) and N(5);
+x15 <= M(1) and N(5);
+x25 <= M(2) and N(5);
+x35 <= M(3) and N(5);
+x45 <= M(4) and N(5);
+x55 <= M(5) and N(5);
+x65 <= M(6) and N(5);
+x75 <= M(7) and N(5);
+x06 <= M(0) and N(6);
+x16 <= M(1) and N(6);
+x26 <= M(2) and N(6);
+x36 <= M(3) and N(6);
+x46 <= M(4) and N(6);
+x56 <= M(5) and N(6);
+x66 <= M(6) and N(6);
+x76 <= M(7) and N(6);
+x07 <= M(0) and N(7);
+x17 <= M(1) and N(7);
+x27 <= M(2) and N(7);
+x37 <= M(3) and N(7);
+x47 <= M(4) and N(7);
+x57 <= M(5) and N(7);
+x67 <= M(6) and N(7);
+x77 <= M(7) and N(7);
+H1: halfadder_logic port map(x01,x10,y01,z01);
+F1: fulladder_logic port map(x20,x02,x11,y02,z02);
+F2: fulladder_logic port map(x30,x21,x12,y03,z03);
+F3: fulladder_logic port map(x40,x31,x22,y04,z04);
+H2: halfadder_logic port map(x13,x04,y05,z05);
+F4: fulladder_logic port map(x50,x41,x32,y06,z06);
+F5: fulladder_logic port map(x23,x14,x05,y07,z07);
+F6: fulladder_logic port map(x60,x51,x42,y08,z08);
+F7: fulladder_logic port map(x33,x24,x15,y09,z09);
+F8: fulladder_logic port map(x70,x61,x52,y10,z10);
+F9: fulladder_logic port map(x43,x34,x25,y11,z11);
+H3: halfadder_logic port map(x16,x07,y12,z12);
+F10: fulladder_logic port map(x71,x62,x53,y13,z13);
+F11: fulladder_logic port map(x44,x35,x26,y14,z14);
+F12: fulladder_logic port map(x72,x63,x54,y15,z15);
+F13: fulladder_logic port map(x45,x36,x27,y16,z16);
+F14: fulladder_logic port map(x73,x64,x55,y17,z17);
+H4: halfadder_logic port map(x46,x37,y18,z18);
+F15: fulladder_logic port map(x74,x65,x56,y19,z19);
+F16: fulladder_logic port map(x75,x66,x57,y20,z20);
+H5: halfadder_logic port map(x76,x67,y21,z21);
+H6: halfadder_logic port map(y02,z01,y22,z22);
+F17: fulladder_logic port map(x03,z02,y03,y23,z23);
+F18: fulladder_logic port map(y04,y05,z03,y24,z24);
+F19: fulladder_logic port map(y06,y07,z04,y25,z25);
+F20: fulladder_logic port map(y08,y09,x06,y26,z26);
+H7: halfadder_logic port map(z06,z07,y27,z27);
+F21: fulladder_logic port map(y10,y11,y12,y28,z28);
+H8: halfadder_logic port map(z08,z09,y29,z29);
+F22: fulladder_logic port map(y13,y14,x17,y30,z30);
+F23: fulladder_logic port map(z10,z11,z12,y31,z31);
+F24: fulladder_logic port map(y15,y16,z13,y32,z32);
+F25: fulladder_logic port map(y17,y18,z15,y33,z33);
+F26: fulladder_logic port map(y19,z17,z18,y34,z34);
+H9: halfadder_logic port map(y20,z19,y35,z35);
+H10: halfadder_logic port map(y21,z20,y36,z36);
+H11: halfadder_logic port map(y23,z22,y37,z37);
+H12: halfadder_logic port map(z23,y24,y38,z38);
+F27: fulladder_logic port map(z24,y25,z05,y39,z39);
+F28: fulladder_logic port map(z25,y26,y27,y40,z40);
+F29: fulladder_logic port map(z26,z27,y28,y41,z41);
+F30: fulladder_logic port map(z28,z29,y30,y42,z42);
+F31: fulladder_logic port map(z30,z31,y32,y43,z43);
+F32: fulladder_logic port map(z32,z16,y33,y44,z44);
+F33: fulladder_logic port map(z33,x47,y34,y45,z45);
+H13: halfadder_logic port map(y35,z34,y46,z46);
+H14: halfadder_logic port map(z35,y36,y47,z47);
+F34: fulladder_logic port map(x77,z21,z36,y48,z48);
+H15: halfadder_logic port map(z37,y38,y49,z49);
+F35: fulladder_logic port map(y39,z38,z49,y50,z50);
+F36: fulladder_logic port map(y40,z39,z50,y51,z51);
+F37: fulladder_logic port map(z40,y41,y29,y52,z52);
+F38: fulladder_logic port map(z41,y31,y42,y53,z53);
+F39: fulladder_logic port map(z14,z42,y43,y54,z54);
+F40: fulladder_logic port map(y44,z43,z54,y55,z55);
+F41: fulladder_logic port map(z44,y45,z55,y56,z56);
+F42: fulladder_logic port map(y46,z45,z56,y57,z57);
+F43: fulladder_logic port map(z46,y47,z57,y58,z58);
+F44: fulladder_logic port map(y48,z47,z58,y59,z59);
+H16: halfadder_logic port map(z51,y52,y60,z60);
+F45: fulladder_logic port map(z52,y53,z60,y61,z61);
+F46: fulladder_logic port map(z53,y54,z61,y62,z62);
+H17: halfadder_logic port map(y55,z62,y63,z63);
+H18: halfadder_logic port map(y56,z63,y64,z64);
+H19: halfadder_logic port map(y57,z64,y65,z65);
+H20: halfadder_logic port map(y58,z65,y66,z66);
+H21: halfadder_logic port map(y59,z66,y67,z67);
+F47: fulladder_logic port map(z48,z59,z67,y68,z68);
+answer(0) <= x00;
+answer(1) <= y01;
+answer(2) <= y22;
+answer(3) <= y37;
+answer(4) <= y49;
+answer(5) <= y50;
+answer(6) <= y51;
+answer(7) <= y60;
+answer(8) <= y61;
+answer(9) <= y62;
+answer(10) <= y63;
+answer(11) <= y64;
+answer(12) <= y65;
+answer(13) <= y66;
+answer(14) <= y67;
+answer(15) <= y68 or z68;
+end struct_wallace;
