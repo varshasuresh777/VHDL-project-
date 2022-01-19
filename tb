@@ -1,0 +1,81 @@
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.std_logic_unsigned.all;
+entity testbench is
+end testbench;
+architecture testbench_struct of testbench is
+component final_logic is
+port
+(
+A,B : in std_logic_vector(7 downto 0);
+clock,load,reset : in std_logic;
+Z : out std_logic_vector (15 downto 0);
+endflag : out std_logic);
+end component;
+signal a,b : std_logic_vector(7 downto 0);
+signal Clock : std_logic;
+signal Load : std_logic;
+signal Reset : std_logic;
+signal Endflag : std_logic;
+signal z : std_logic_vector(15 downto 0);
+begin
+ 
+I1 : final_logic port map (a,b,Clock,Load,Reset,z,Endflag);
+ 
+process
+begin
+a<= "00001000";
+b<= "00001000";
+Clock<= '0';
+Reset <= '1';
+Load <= '0';
+ 
+wait for 100 ns;
+ 
+a<= "00001000";
+b<= "00001000";
+Clock<= '1';
+Reset <= '1';
+Load <= '0';
+ 
+wait for 100 ns; 
+ 
+ 
+a<= "00000100";
+b<= "00000101";
+Clock<= '0';
+Reset <= '1';
+Load <= '0';
+ 
+wait for 100 ns; 
+ 
+ 
+ 
+ 
+a<= "00000100";
+b<= "00000101";
+Clock<= '1';
+Reset <= '1';
+Load <= '0';
+ 
+wait for 100 ns; 
+a<= "10000100";
+b<= "10000101";
+Clock<= '0';
+Reset <= '1';
+Load <= '0';
+ 
+wait for 100 ns; 
+ 
+ 
+ 
+a<= "10000100";
+b<= "10000101";
+Clock<= '1';
+Reset <= '1';
+Load <= '0';
+ 
+wait for 100 ns; 
+ 
+end process;
+end testbench_struct;
